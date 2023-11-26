@@ -43,7 +43,10 @@ function UseState({ name }) {
         onChange={event => setValue(event.target.value)}
       />
       <button
-        onClick={() => setLoading(true)}
+        onClick={() => {
+          setError(false);
+          setLoading(true);
+        }}
       >Verify</button>
     </div>
   );
