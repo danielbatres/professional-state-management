@@ -3,49 +3,44 @@ import React, { useEffect, useState } from 'react'
 const SECURITY_CODE = 'paradigma';
 
 function UseState({ name }) {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  
-  console.log(value);
+  const [state, setState] = useState({
+    value: '',
+    error: false,
+    loading: false
+  });
 
   useEffect(() => {
-    console.log("Starting effect")
-
-    if (!!loading) {
+    if (!!state.loading) {
       setTimeout(() => {
-        console.log("Validating");
-
-        setError(value !== SECURITY_CODE);
-
-        setLoading(false);
+        setState({
+          ...state,
+          error: state.value !== SECURITY_CODE, 
+          loading: false 
+        });
       }, 2000);
     }
-
-    console.log("End effect");
-  }, [loading]);
+  }, [state.loading]);
 
   return (
     <div>
       <h2>Delete {name}</h2>
       <p>Please enter the security code</p>
-      {error && (
+      {state.error && (
         <p>Error: invalid code</p>
       )}
 
-      {loading && (
+      {state.loading && (
         <p>Loading...</p>
       )}
 
       <input 
         placeholder="Security code" 
-        value={value}
-        onChange={event => setValue(event.target.value)}
+        value={state.value}
+        onChange={event => setState({ ...state, value: event.target.value })}
       />
       <button
         onClick={() => {
-          setError(false);
-          setLoading(true);
+          setState({ ...state, error: false, loading: true })
         }}
       >Verify</button>
     </div>
